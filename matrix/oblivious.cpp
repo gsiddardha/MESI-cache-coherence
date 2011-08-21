@@ -10,6 +10,8 @@ extern int matrix_n, matrix_m, matrix_p;
 extern int A(int, int);
 extern int B(int, int);
 
+void recur_func(int, int, int, int, int, int, int);
+
 void cache_oblivious(void) {
 	int i, j, k;
 	recur_func(matrix_n, matrix_m, matrix_p, 0, 0, 0, 0);
@@ -17,7 +19,7 @@ void cache_oblivious(void) {
 
 void recur_func(int n, int m, int p, int a1, int a2, int b1, int b2){
 	if((n==1) && (m==1) && (p==1)){
-		cout << A(a1, a2)*B(b1, b2) << endl;
+		A(a1, a2)*B(b1, b2);
 		return;
 	}
 
