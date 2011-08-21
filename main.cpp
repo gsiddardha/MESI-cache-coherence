@@ -20,7 +20,7 @@ int B(int x, int y);
 
 int main(int argc, char** argv) {
 	if(argc!=5) {
-		cout << "Usage: " << argv[0] << "<cache_size_inKB> <block_size_inB> <associativity> <memory_size_inKB>\n";
+		cout << "Usage: " << argv[0] << " <cache_size_inKB> <block_size_inB> <associativity> <memory_size_inKB>\n";
 		return 1;
 	}
 
