@@ -14,7 +14,7 @@ class Memory {
 	private:
 		int* memory;
 		int size;
-		int writer;
+		int writer; // Current position of writer
 };
 
 #endif

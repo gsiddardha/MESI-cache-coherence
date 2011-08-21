@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
-#include "memory.h"
+
+#include "Memory.h"
 
 using namespace std;
 
