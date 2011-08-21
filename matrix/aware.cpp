@@ -10,25 +10,24 @@ extern int matrix_n, matrix_m, matrix_p;
 extern int A(int, int);
 extern int B(int, int);
 
-void cache_aware(int s) {
-	int i, j, k, ibuf, jbuf, kbuf;
+void cache_aware(int s);
+void matrix_ord(int n, int m, int p, int i, int j, int k, int s);
 
-	int** C = new int*[matrix_n];
-	for(i=0; i<matrix_n; i++) {
-		C[i] = new int[matrix_p];
-	}
 
-	for(ibuf=0; ibuf<matrix_n/s; ibuf++)
-		for(jbuf=0; jbuf<matrix_n/s; jbuf++)
-			for(kbuf=0; kbuf<matrix_n/s; kbuf++)
-				for(i=ibuf; i<min(ibuf+s-1,matrix_n); i++)
-					for(j=jbuf; j<min(jbuf+s-1,matrix_n); j++)
-						for(k=kbuf; k<min(kbuf+s-1,matrix_n); k++)
-							C[i][j] += A(i,k)*B(k,j);
+void cache_aware(int s){
+	int i, j, k;
 
-	for(i=0; i<matrix_n; i++) {
-		for(j=0; j<matrix_p; j++)
-			cout << "\t" << C[i][j];
-		cout << endl;
-	}
+	for(i = 0; i < matrix_n/s; i++)
+		for(j = 0; j < matrix_m/s; j++)
+			for(k = 0 ; k < matrix_p/s; k++)
+				matrix_ord(matrix_n, matrix_m, matrix_p, i, k, j, s);
+}
+
+void matrix_ord(int n, int m, int p, int i, int j, int k, int s){
+	int w, x, y;
+
+	for(w=i*s; w < (i+1)*s; w++)
+		for(x=j*s; x < (j+1)*s; x++)
+			for(y=k*s;y < (k+1)*s;y++)
+				A(w,y)*B(y,x);
 }
