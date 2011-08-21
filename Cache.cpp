@@ -48,6 +48,7 @@ int Cache::get_memory(int address) {
 	for(int i=0; i < this->assoc; i++) {
 		Block* cur_block = cur_set->get_block(i);
 		if(cur_block->get_tag() == tag_num) {
+			cur_set->inc_counter(cur_block->get_index());
 			this->hits++;
 			return cur_block->get_word(word_num);
 		}

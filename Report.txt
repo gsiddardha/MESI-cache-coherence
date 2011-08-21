@@ -1,0 +1,19 @@
+Cache Implementation:
+    We have implemented set-associative mapping i.e. a combination of
+    direct and associative-mapping techniques. Main memory Address is
+    parsed to the following format: 
+    -----------------------------------
+    | Tag Bits | Set Bits | Word Bits |
+    -----------------------------------
+   
+    The number of bits for tag, set and word are calculated from the 
+    block size, cache size and associativity. When we require a 
+    particular memory location, we calculate three variables - 
+    set_num, tag_num, word_num. These are the values of the tag bits,
+    set bits and word bits, which we get by bitwise anding with 
+    2^tag_bits, 2^set_bits and 2^word_bits respectively.
+    
+    If the block we require is present, then we return the word from 
+    there. Otherwise, we return the word from the main memory and 
+    add the block into the cache. When we want to add a block into 
+    the cache, we 

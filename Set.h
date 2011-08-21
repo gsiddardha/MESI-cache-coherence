@@ -11,6 +11,7 @@ public:
 	Block* get_block(int index);
 	void insert_block(int tag_value, Block* new_block);
 	int	get_counter();
+	void inc_counter(int index);
 
 private:
 	int assoc;		// Associativity

@@ -15,6 +15,7 @@
  * -----------------------------------
  * | Tag Bits | Set Bits | Word Bits |
  * -----------------------------------
+ *
  * The number of bits for tag, set and word are calculated from
  * the block size, cache size and associativity.
  */

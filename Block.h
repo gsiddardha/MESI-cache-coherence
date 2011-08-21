@@ -12,7 +12,9 @@ public:
 	int	get_tag();
 	int get_index();
 	int get_word(int index);
+
 	int get_counter();
+	void set_counter(int counter);
 
 private:
 	int tag;		// Tag bits of the block

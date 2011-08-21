@@ -22,6 +22,11 @@ int Block::get_word(int index) {
 int Block::get_counter() {
 	return this->counter;
 }
+
+void Block::set_counter(int counter) {
+	this->counter = counter;
+}
+
 void Block::set_block(int counter, int tag_value, Block* new_block) {
 	this->counter 	= counter;
 	this->tag 		= tag_value;

@@ -36,6 +36,11 @@ int Set::get_counter() {
 	return this->counter;
 }
 
+void Set::inc_counter(int index) {
+	Block* temp_block = this->blocks[index];
+	temp_block->set_counter(this->get_counter());
+}
+
 Set::~Set() {
 	for(int i=0; i < this->assoc; i++)
 		delete this->blocks[i];
