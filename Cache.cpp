@@ -8,8 +8,6 @@ using namespace std;
 
 Cache::Cache(int cache_size, int block_size, int assoc, int bits_n) {
 	this->hits		= 0;
-	this->misses		= {0, 0, 0, 0};
-
 	this->assoc 		= assoc;
 	this->cache_size	= cache_size*1024;	// Cache size is given in KB
 	this->block_size	= block_size;		// Block size is given in B
@@ -26,6 +24,8 @@ Cache::Cache(int cache_size, int block_size, int assoc, int bits_n) {
 	this->tag_mul 		= pow(2, this->word_bits + this->set_bits) * (pow(2, tag_bits) - 1);
 	this->word_mul 		= pow(2, this->word_bits) -1;
 
+	for(int i=0; i<4; i++)
+		this->misses[i] = 0;
 	this->memory		= new Set*[set_n];
 	for( int i=0; i<set_n; i++) {
 		this->memory[i] = new Set(this->assoc, this->block_size);
@@ -41,8 +41,9 @@ void Cache::restart(void) {
 	for(int i=0; i<this->set_n; i++)
 		this->memory[i] = new Set(this->assoc, this->block_size);
 
-	this->hits 	= 0;
-	this->misses 	= {0, 0, 0, 0};
+	this->hits = 0;
+	for(int i=0; i<4; i++)
+		this->misses[i] = 0;
 }
 
 int Cache::get_hits(void) {
