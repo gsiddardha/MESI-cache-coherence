@@ -54,6 +54,18 @@ int Cache::get_misses(void) {
 	return this->misses[0];
 }
 
+int Cache::get_cold_misses(void) {
+	return this->misses[1];
+}
+
+int Cache::get_capacity_misses(void) {
+	return this->misses[2];
+}
+
+int Cache::get_conflict_misses(void) {
+	return this->misses[3];
+}
+
 int Cache::get_cached(int address) {
 	int set_num	= this->set_mul & address;
 	int tag_num	= this->tag_mul & address;
