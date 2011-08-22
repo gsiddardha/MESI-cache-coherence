@@ -1,9 +1,9 @@
 #include "Block.h"
 
 Block::Block(int index, int counter, int block_size) {
-	this->index		= index;
-	this->word_n 	= block_size / 4;
-	this->words		= new int[this->word_n];
+	this->index	= index;
+	this->word_n 	= block_size/4;
+	this->words	= new int[this->word_n];
 	this->counter	= counter;
 }
 
@@ -19,6 +19,14 @@ int Block::get_word(int index) {
 	return words[index];
 }
 
+int Block::get_word_by_addr(int addr) {
+	return words[addr % word_n];
+}
+
+void Block::set_word(int index, int value) {
+	this->words[index] = value;
+}
+
 int Block::get_counter() {
 	return this->counter;
 }
@@ -29,7 +37,7 @@ void Block::set_counter(int counter) {
 
 void Block::set_block(int counter, int tag_value, Block* new_block) {
 	this->counter 	= counter;
-	this->tag 		= tag_value;
+	this->tag 	= tag_value;
 
 	for(int i=0; i < this->word_n; i++) {
 		this->words[i] = new_block->get_word(i);

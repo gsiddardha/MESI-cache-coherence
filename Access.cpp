@@ -7,21 +7,44 @@
 using namespace std;
 
 Access::Access(int cache_size, int block_size, int assoc, int memory_size) {
-	this->bits_n = log2(memory_size);
-	this->memory = new Memory(memory_size);
-	this->cache = new Cache(cache_size, block_size, assoc, this->bits_n);
+	this->accesses	= 0;
+	this->memory	= new Memory(memory_size, block_size);
+	this->cache	= new Cache(cache_size, block_size, assoc, log2(memory_size*1024));
+}
+
+void Access::print(void) {
+	cout << endl << "\tCache Statistics:" << endl;
+	cout << "\t\tAccesses:" << this->accesses << endl;
+	cout << "\t\tHits: " << this->cache->get_hits() << endl;
+	cout << "\t\tMisses: " << this->cache->get_misses() << endl;
+	cout << endl << endl;
+}
+
+void Access::restart_cache(void) {
+	this->accesses = 0;
+	this->cache->restart();
 }
 
 void Access::write(int value) {
 	this->memory->write(value);
 }
 
-void Access::set(int addr, int value) {
-	this->memory->store(addr, value);
-}
-
 int Access::get(int addr) {
-	return this->memory->read(addr);
+	this->accesses++;
+	//cout << addr;
+	int misses = this->cache->get_misses();
+	int word = this->cache->get_cached(addr);
+	if(word==-1 && this->cache->get_misses()==misses+1) {
+		Block* buf = this->memory->read(addr);
+		this->cache->insert_block(addr, buf);
+		//cout << " inserted" << endl;
+		return buf->get_word_by_addr(addr);
+	} else {
+		//cout << " cached" << endl;
+		return word;
+	}
+
+	return 0;
 }
 
 Access::~Access(void) {

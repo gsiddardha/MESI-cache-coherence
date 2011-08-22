@@ -7,8 +7,8 @@
 using namespace std;
 
 Cache::Cache(int cache_size, int block_size, int assoc, int bits_n) {
-	this->hits			= 0;
-	this->misses		= 0;
+	this->hits		= 0;
+	this->misses		= {0, 0, 0, 0};
 
 	this->assoc 		= assoc;
 	this->cache_size	= cache_size*1024;	// Cache size is given in KB
@@ -18,17 +18,31 @@ Cache::Cache(int cache_size, int block_size, int assoc, int bits_n) {
 	this->set_n 	 	= this->cache_size / this->set_size;
 	this->bits_n 	 	= bits_n;
 
-	this->word_bits		= this->block_size / 4;
+	this->word_bits		= log2(this->block_size/4);
 	this->set_bits		= log2(set_n);
 	this->tag_bits		= this->bits_n - (this->set_bits + this->word_bits);
 
-	this->set_mul 		= pow10(this->word_bits) * (pow(2, set_bits) - 1);
-	this->tag_mul 		= pow10(this->word_bits + this->set_bits) * (pow(2, tag_bits) - 1);
+	this->set_mul 		= pow(2, this->word_bits) * (pow(2, set_bits) - 1);
+	this->tag_mul 		= pow(2, this->word_bits + this->set_bits) * (pow(2, tag_bits) - 1);
 	this->word_mul 		= pow(2, this->word_bits) -1;
 
+	this->memory		= new Set*[set_n];
 	for( int i=0; i<set_n; i++) {
 		this->memory[i] = new Set(this->assoc, this->block_size);
 	}
+}
+
+void Cache::restart(void) {
+	for(int i=0; i<this->set_n; i++)
+		delete this->memory[i];
+	delete this->memory;
+
+	this->memory = new Set*[set_n];
+	for(int i=0; i<this->set_n; i++)
+		this->memory[i] = new Set(this->assoc, this->block_size);
+
+	this->hits 	= 0;
+	this->misses 	= {0, 0, 0, 0};
 }
 
 int Cache::get_hits(void) {
@@ -36,13 +50,13 @@ int Cache::get_hits(void) {
 }
 
 int Cache::get_misses(void) {
-	return this->misses;
+	return this->misses[0];
 }
 
-int Cache::get_memory(int address) {
-	int set_num = this->set_mul & address;
-	int tag_num = this->tag_mul & address;
-	int word_num = this->word_mul & address;
+int Cache::get_cached(int address) {
+	int set_num	= this->set_mul & address;
+	int tag_num	= this->tag_mul & address;
+	int word_num	= this->word_mul & address;
 
 	Set* cur_set = this->memory[set_num];
 	for(int i=0; i < this->assoc; i++) {
@@ -54,7 +68,7 @@ int Cache::get_memory(int address) {
 		}
 	}
 
-	this->misses++;
+	this->misses[0]++;
 	return -1;
 }
 
@@ -62,10 +76,11 @@ void Cache::insert_block(int address, Block* new_block) {
 	int set_num = this->set_mul & address;
 	int tag_num = this->tag_mul & address;
 
-	Set* cur_set = memory[set_num];
-	cur_set->insert_block(tag_num, new_block);
+	this->memory[set_num]->insert_block(tag_num, new_block);
 }
 
 Cache::~Cache(void) {
+	for(int i=0; i<this->set_n; i++)
+		delete this->memory[i];
 	delete this->memory;
 }

@@ -4,23 +4,24 @@
 #include "Block.h"
 
 class Set {
-public:
-	Set(int assoc, int block_size);
-	~Set();
+	public:
+		Set(int assoc, int block_size);
 
-	Block* get_block(int index);
-	void insert_block(int tag_value, Block* new_block);
-	int	get_counter();
-	void inc_counter(int index);
+		Block* get_block(int index);
+		void insert_block(int tag_value, Block* new_block);
+		int get_counter(void);
+		void inc_counter(int index);
 
-private:
-	int assoc;		// Associativity
-	int block_size;	// Size of each block
+		~Set();
 
-	int counter;	// Counter for giving unique index to each block
-	int lru;		// Index of block having least value of counter
+	private:
+		int assoc;	// Associativity
+		int block_size;	// Size of each block
 
-	Block** blocks;	// Array of Blocks
+		int counter;	// Counter for giving unique index to each block
+		int lru;	// Index of block having least value of counter
+
+		Block** blocks;	// Array of Blocks
 };
 
 #endif /* SET_H_ */

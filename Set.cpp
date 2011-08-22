@@ -2,12 +2,13 @@
 #include "Set.h"
 
 Set::Set(int assoc, int block_size) {
-	this->assoc			= assoc;
-	this->block_size 	= block_size;
+	this->assoc		= assoc;
+	this->block_size	= block_size;
 
 	this->counter 	= 0;
-	this->lru 		= 0;
+	this->lru 	= 0;
 
+	this->blocks = new Block*[assoc];
 	for(int i=0; i < this->assoc; i++) {
 		this->blocks[i] = new Block(i, this->get_counter(), block_size);
 	}
@@ -44,4 +45,5 @@ void Set::inc_counter(int index) {
 Set::~Set() {
 	for(int i=0; i < this->assoc; i++)
 		delete this->blocks[i];
+	delete this->blocks;
 }

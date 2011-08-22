@@ -1,5 +1,5 @@
-#ifndef CACHE_H
-#define CACHE_H
+#ifndef CACHE_H_
+#define CACHE_H_
 
 #include "Set.h"
 
@@ -27,20 +27,23 @@ class Cache {
 
 		int get_hits(void);
 		int get_misses(void);
-		int get_memory(int address);
+		int get_cached(int address);
 
+		void restart(void);
 		void insert_block(int address, Block* new_block);
 
 		~Cache(void);
 
 	private:
+		Set** memory;
+
 		int cache_size; // Size of cache in bytes
 		int block_size;	// Size of block in bytes
 		int set_size;	// Size of set in bytes
-		int assoc;		// Associativity
+		int assoc;	// Associativity
 
-		int set_n;		// Number of sets
-		int bits_n;		// Number of bits in Main memory address
+		int set_n;	// Number of sets
+		int bits_n;	// Number of bits in Main memory address
 
 		int set_bits;	// Number of bits for Set
 		int tag_bits;	// Number of bits for Tag
@@ -50,10 +53,8 @@ class Cache {
 		int tag_mul;	// Number to be bitwise-multiplied with location to get tag index
 		int word_mul;	// Number to be bitwise-multiplied with location to get word index
 
-		int hits;		// Number of hits
-		int misses;		// Number of misses
-
-		Set** memory;	// Cache memory - Has set_n sets
+		int hits;	// Number of hits
+		int misses[4];	// Number of misses
 };
 
 #endif /* CACHE_H_ */

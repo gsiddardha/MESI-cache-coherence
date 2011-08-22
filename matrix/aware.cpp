@@ -26,8 +26,8 @@ void cache_aware(int s){
 void matrix_ord(int n, int m, int p, int i, int j, int k, int s){
 	int w, x, y;
 
-	for(w=i*s; w < (i+1)*s; w++)
-		for(x=j*s; x < (j+1)*s; x++)
-			for(y=k*s;y < (k+1)*s;y++)
+	for(w=i*s; w < min(n, (i+1)*s); w++)
+		for(x=j*s; x < min(m, (j+1)*s); x++)
+			for(y=k*s; y < min(p, (k+1)*s); y++)
 				A(w,y)*B(y,x);
 }

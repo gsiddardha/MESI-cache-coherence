@@ -1,23 +1,25 @@
-#ifndef ACCESS_H
-#define ACCESS_H
+#ifndef ACCESS_H_
+#define ACCESS_H_
 
 #include "Memory.h"
 #include "Cache.h"
 
 class Access {
-public:
-	Access(int cache_size, int block_size, int assoc, int memory_size);
+	public:
+		Access(int cache_size, int block_size, int assoc, int memory_size);
 
-	void write(int value);
-	void set(int addr, int value);
-	int get(int addr);
+		void write(int value);
+		int get(int addr);
+		void print(void);
+		void restart_cache(void);
 
-	~Access(void);
+		~Access(void);
 
-private:
-	Memory* memory;
-	Cache* cache;
-	int bits_n;	// Number of bits in the address
+	private:
+		Memory* memory;
+		Cache* cache;
+
+		int accesses;
 };
 
-#endif
+#endif /* ACCESS_H_ */

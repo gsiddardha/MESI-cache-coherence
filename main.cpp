@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <cmath>
 #include <fstream>
 #include "Access.h"
 
@@ -58,17 +59,23 @@ int main(int argc, char** argv) {
 	// Cache Unaware matrix multiplication
 	cout << "Cache Unaware:" << endl;
 	cache_unaware();
-	cout << endl << "\tCache Statistics:" << endl << endl;
+	accessor->print();
+
+	// Restart Cache
+	accessor->restart_cache();
 
 	// Cache Aware matrix multiplication
 	cout << "Cache Aware:" << endl;
-	cache_aware(atoi(argv[2])/4);
-	cout << endl << "\tCache Statistics:" << endl << endl;
+	cache_aware(2);
+	accessor->print();
+
+	// Restart Cache
+	accessor->restart_cache();
 
 	// Cache Oblivious matrix multiplication
 	cout << "Cache Oblivious:" << endl;
 	cache_oblivious();
-	cout << endl << "\tCache Statistics:" << endl << endl;
+	accessor->print();
 
 	// Closing files
 	inFile.close();

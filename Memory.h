@@ -1,20 +1,24 @@
-#ifndef MEMORY_H
-#define MEMORY_H
+#ifndef MEMORY_H_
+#define MEMORY_H_
+
+#include "Block.h"
 
 class Memory {
 	public:
-		Memory(int size);
+		Memory(int memory_size, int block_size);
 
+		Block* read(int address);
 		void write(int value);
-		int read(int address);
-		void store(int address, int value);
+		void print(void);
 
 		~Memory(void);
 
 	private:
-		int* memory;
-		int size;
-		int writer; // Current position of writer
+		Block** memory;
+
+		int blocks_n;
+		int words_n;
+		int writer;
 };
 
-#endif
+#endif /* MEMORY_H_ */
