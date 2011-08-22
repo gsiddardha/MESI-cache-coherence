@@ -27,8 +27,11 @@ class Cache {
 
 		int get_hits(void);
 		int get_misses(void);
-		int get_cached(int address);
+		int get_cold_misses(void);
+		int get_capacity_misses(void);
+		int get_conflict_misses(void);
 
+		int get_cached(int address);
 		void restart(void);
 		void insert_block(int address, Block* new_block);
 

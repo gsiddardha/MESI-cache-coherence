@@ -17,6 +17,7 @@ void Access::print(void) {
 	cout << "\t\tAccesses:" << this->accesses << endl;
 	cout << "\t\tHits: " << this->cache->get_hits() << endl;
 	cout << "\t\tMisses: " << this->cache->get_misses() << endl;
+	cout << "\t\tCold Misses: " << this->cache->get_cold_misses() << endl;
 	cout << endl << endl;
 }
 
