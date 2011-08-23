@@ -2,6 +2,7 @@
 #define CACHE_H_
 
 #include "Set.h"
+#include "Memory.h"
 
 /* Class: Cache
  *
@@ -23,7 +24,7 @@
 
 class Cache {
 	public:
-		Cache(int cache_size, int block_size, int set_size, int bits_n);
+		Cache(int cache_size, int block_size, int assoc, int bits_n, Memory* memory);
 
 		int get_hits(void);
 		int get_misses(void);
@@ -39,14 +40,16 @@ class Cache {
 
 	private:
 		Set** data;
+		Memory* memory;
 
 		int cache_size; // Size of cache in bytes
 		int block_size;	// Size of block in bytes
 		int set_size;	// Size of set in bytes
 		int assoc;	// Associativity
 
-		int set_n;	// Number of sets
-		int bits_n;	// Number of bits in Main memory address
+		int num_words;	// Number of words per block
+		int num_sets;	// Number of sets
+		int num_bits;	// Number of bits in Main memory address
 
 		int set_bits;	// Number of bits for Set
 		int tag_bits;	// Number of bits for Tag

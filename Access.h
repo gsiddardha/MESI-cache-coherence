@@ -11,6 +11,7 @@ class Access {
 		void write(int value);
 		int get(int addr);
 		void print(char* str);
+
 		void restart_cache(void);
 
 		~Access(void);

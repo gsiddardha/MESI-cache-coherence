@@ -53,24 +53,25 @@ int main(int argc, char** argv) {
 
 	// Cache Unaware matrix multiplication
 	cache_unaware();
-	accessor->print("unaware");
+	accessor->print((char*)"unaware");
 
 	// Restart Cache
 	accessor->restart_cache();
 
 	// Cache Aware matrix multiplication
 	cache_aware(2);
-	accessor->print("aware");
+	accessor->print((char*)"aware");
 
 	// Restart Cache
 	accessor->restart_cache();
 
 	// Cache Oblivious matrix multiplicatio
 	cache_oblivious();
-	accessor->print("oblivious");
+	accessor->print((char*)"oblivious");
 
 	cout << endl;
 
+	delete accessor;
 	return 0;
 }
 

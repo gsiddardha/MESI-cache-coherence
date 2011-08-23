@@ -12,7 +12,6 @@ class Block {
 		int get_tag(void);
 		int get_index(void);
 		int get_word(int index);
-		int get_word_by_addr(int addr);
 
 		int get_counter(void);
 		void set_counter(int counter);
@@ -20,12 +19,13 @@ class Block {
 	~Block();
 
 	private:
-		int tag;	// Tag bits of the block
+		int* words;	// Array of words (integers)
+
 		int counter;	// Unique counter of the block
 		int index;	// Index in the array.
-		int word_n;	// Number of words present in the block
 
-		int* words;	// Array of words (integers)
+		int tag;	// Tag bits of the block
+		int num_words;	// Number of words present in the block
 };
 
 #endif /* BLOCK_H_ */

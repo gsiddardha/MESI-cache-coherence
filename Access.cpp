@@ -9,7 +9,7 @@ using namespace std;
 Access::Access(int cache_size, int block_size, int assoc, int data_numbers) {
 	this->accesses	= 0;
 	this->memory	= new Memory(data_numbers, block_size);
-	this->cache	= new Cache(cache_size, block_size, assoc, log2(data_numbers*4));
+	this->cache	= new Cache(cache_size, block_size, assoc, log2(data_numbers*4), this->memory);
 }
 
 void Access::print(char* str) {
@@ -34,20 +34,20 @@ void Access::write(int value) {
 
 int Access::get(int addr) {
 	this->accesses++;
-	//cout << addr;
-	/*int misses = this->cache->get_misses();
+
+	//int misses = this->cache->get_misses();
 	int word = this->cache->get_cached(addr);
-	if(word==-1 && this->cache->get_misses()==misses+1) {
-	*/	Block* buf = this->memory->read(addr);
-	//	this->cache->insert_block(addr, buf);
+	/*if(word==-1 && this->cache->get_misses()==misses+1) {
+		Block* buf = this->memory->read(addr);
+		this->cache->insert_block(addr, buf);
 		//cout << " inserted" << endl;
 		return buf->get_word_by_addr(addr);
-	/*} else {
+	} else {
 		//cout << " cached" << endl;
 		return word;
 	}*/
 
-	return 0;
+	return word;
 }
 
 Access::~Access(void) {
