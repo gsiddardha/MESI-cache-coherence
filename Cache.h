@@ -39,6 +39,7 @@ class Cache {
 
 	private:
 		Set** data;
+		Set* data_cap;
 		Memory* memory;
 
 		int cache_size; // Size of cache in bytes
@@ -57,6 +58,9 @@ class Cache {
 		int set_mul;	// Number to be bitwise-multiplied with location to get set index
 		int tag_mul;	// Number to be bitwise-multiplied with location to get tag index
 		int word_mul;	// Number to be bitwise-multiplied with location to get word index
+
+		int tag_cap_mul;	// Number to be bitwise-multiplied with location to get tag index
+		int word_cap_mul; // Number to be bitwise-multiplied with location to get word index
 
 		int hits;	// Number of hits
 		int misses[4];	// Number of misses

@@ -32,6 +32,9 @@ Cache::Cache(int cache_size, int block_size, int assoc, int num_bits, Memory* me
 	this->set_mul 		= pow(2, this->word_bits) * (pow(2, this->set_bits) - 1);
 	this->tag_mul 		= pow(2, this->word_bits + this->set_bits) * (pow(2, this->tag_bits) - 1);
 
+	this->word_cap_mul	= this->word_mul;
+	this->tag_cap_mul	= pow(2, this->word_bits) * (pow(2, this->tag_bits + this->set_bits) -1);
+
 	// Initialising Statistics
 	this->hits = 0;
 	for(int i=0; i<4; i++)
@@ -42,6 +45,9 @@ Cache::Cache(int cache_size, int block_size, int assoc, int num_bits, Memory* me
 	for( int i=0; i<num_sets; i++) {
 		this->data[i] = new Set(this->assoc, this->block_size);
 	}
+
+	// Initialising Cap Cache
+	this->data_cap = new Set(this->cache_size/this->block_size, this->block_size);
 }
 
 void Cache::restart(void) {
@@ -83,6 +89,9 @@ int Cache::get_cached(int address) {
 	int set_num	= (this->set_mul & address)/pow(2, this->word_bits);
 	int tag_num	= (this->tag_mul & address)/pow(2, this->word_bits + this->set_bits);
 
+	int word_cap_num = word_num;
+	int tag_cap_num	= (this->tag_cap_mul & address)/pow(2, this->word_bits);
+
 	Set* cur_set = this->data[set_num];
 	for(int i=0; i<assoc; i++) {
 		Block* cur_block = cur_set->get_block(i);
@@ -94,14 +103,21 @@ int Cache::get_cached(int address) {
 	}
 
 	this->misses[0]++;
-
 	Block* cur_block = this->memory->read(address);
+
 	cur_set->insert_block(tag_num, cur_block);
 	if(cur_set->get_dirty()==false) {
 		this->misses[1]++;
 		cur_set->set_dirty();
 	} else {
 		this->misses[3]++;
+	}
+
+	this->data_cap->insert_block(tag_cap_num, cur_block);
+	if(this->data_cap->get_dirty()==false) {
+		this->data_cap->set_dirty();
+	} else {
+		this->misses[2]++;
 	}
 
 	return cur_block->get_word(address % this->num_words);
@@ -111,4 +127,5 @@ Cache::~Cache(void) {
 	for(int i=0; i<this->num_sets; i++)
 		delete this->data[i];
 	delete this->data;
+	delete this->data_cap;
 }
