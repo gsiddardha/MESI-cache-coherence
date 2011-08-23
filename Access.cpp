@@ -13,14 +13,14 @@ Access::Access(int cache_size, int block_size, int assoc, int data_numbers) {
 }
 
 void Access::print(char* str) {
-	cout << "Cache " << str << " Statistics:" << endl;
-	cout << "\tAccesses: " << this->accesses << endl;
-	cout << "\tHits: " << this->cache->get_hits() << endl;
-	cout << "\tMisses: " << this->cache->get_misses() << endl;
-	cout << "\tCold Misses: " << this->cache->get_cold_misses() << endl;
-	cout << "\tCapacity Misses: " << this->cache->get_capacity_misses() << endl;
-	cout << "\tConflict Misses: " << this->cache->get_conflict_misses() << endl;
-	cout << endl << endl;
+	cout << endl;
+	cout << "\tCache " << str << " Statistics:" << endl;
+	cout << "\t\tAccesses: " << this->accesses << endl;
+	cout << "\t\tHits: " << this->cache->get_hits() << endl;
+	cout << "\t\tMisses: " << this->cache->get_misses() << endl;
+	cout << "\t\tCold Misses: " << this->cache->get_cold_misses() << endl;
+	cout << "\t\tCapacity Misses: " << this->cache->get_capacity_misses() << endl;
+	cout << "\t\tConflict Misses: " << this->cache->get_conflict_misses() << endl;
 }
 
 void Access::restart_cache(void) {

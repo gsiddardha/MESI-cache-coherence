@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <cmath>
-#include <fstream>
 #include "Access.h"
 
 using namespace std;
@@ -20,39 +19,37 @@ int A(int x, int y);
 int B(int x, int y);
 
 int main(int argc, char** argv) {
-	if(argc!=4) {
-		cout << "Usage: " << argv[0] << " <cache_size_inKB> <block_size_inB> <associativity>\n";
-		return 1;
-	}
-
-	// Declaring variables
-	int i, j;
-	ifstream inFile;
-	
-	// Opening files
-	inFile.open("INPUT");
-	
-	// Checking for situation of files
-	if(!inFile.is_open()) {
-		cout << "Error while opening the input file" << endl;
+	if(argc!=7) {
+		cout << "Usage: " << argv[0] << " <cache_size_inKB> <block_size_inB> <associativity> <matrix_n> <matrix_m> <matrix_p>\n";
 		return 1;
 	}
 
 	// Reading matrix lengths
-	inFile >> matrix_n >> matrix_m >> matrix_p;
+	matrix_n = atoi(argv[4]);
+	matrix_m = atoi(argv[5]);
+	matrix_p = atoi(argv[6]);
 
 	// Initialise accessor
 	accessor = new Access(atoi(argv[1])*1024, atoi(argv[2]), atoi(argv[3]), (matrix_n+matrix_p)*matrix_m);
 
 	// Reading matrices A & B
-	for(i=0; i<matrix_n; i++)
-		for(j=0; j<matrix_m; j++) {
+	for(int i=0; i<matrix_n; i++)
+		for(int j=0; j<matrix_m; j++) {
 			accessor->write(rand());
 		}
-	for(i=0; i<matrix_m; i++)
-		for(j=0; j<matrix_p; j++) {
+	for(int i=0; i<matrix_m; i++)
+		for(int j=0; j<matrix_p; j++) {
 			accessor->write(rand());
 		}
+
+	// Starting Ouput
+	cout << "\tCache size: " << argv[1] << " KB" << endl;
+	cout << "\tBlock size: " << argv[2] << " B" << endl;
+	cout << "\tAssociativity: " << argv[3] << endl;
+	cout << endl;
+	cout << "\tMatrix n: " << argv[4] << endl;
+	cout << "\tMatrix m: " << argv[5] << endl;
+	cout << "\tMatrix p: " << argv[6] << endl;
 
 	// Cache Unaware matrix multiplication
 	cache_unaware();
@@ -72,8 +69,7 @@ int main(int argc, char** argv) {
 	cache_oblivious();
 	accessor->print("oblivious");
 
-	// Closing files
-	inFile.close();
+	cout << endl;
 
 	return 0;
 }
