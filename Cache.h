@@ -34,7 +34,6 @@ class Cache {
 
 		int get_cached(int address);
 		void restart(void);
-		void insert_block(int address, Block* new_block);
 
 		~Cache(void);
 

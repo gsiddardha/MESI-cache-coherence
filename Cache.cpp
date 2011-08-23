@@ -96,7 +96,7 @@ int Cache::get_cached(int address) {
 	this->misses[0]++;
 
 	Block* cur_block = this->memory->read(address);
-	this->insert_block(address, cur_block);
+	cur_set->insert_block(tag_num, cur_block);
 	if(cur_set->get_dirty()==false) {
 		this->misses[1]++;
 		cur_set->set_dirty();
@@ -105,13 +105,6 @@ int Cache::get_cached(int address) {
 	}
 
 	return cur_block->get_word(address % this->num_words);
-}
-
-void Cache::insert_block(int address, Block* new_block) {
-	int set_num	= (this->set_mul & address)/pow(2, this->word_bits);
-	int tag_num	= (this->tag_mul & address)/pow(2, this->word_bits + this->set_bits);
-
-	this->data[set_num]->insert_block(tag_num, new_block);
 }
 
 Cache::~Cache(void) {

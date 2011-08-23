@@ -34,20 +34,7 @@ void Access::write(int value) {
 
 int Access::get(int addr) {
 	this->accesses++;
-
-	//int misses = this->cache->get_misses();
-	int word = this->cache->get_cached(addr);
-	/*if(word==-1 && this->cache->get_misses()==misses+1) {
-		Block* buf = this->memory->read(addr);
-		this->cache->insert_block(addr, buf);
-		//cout << " inserted" << endl;
-		return buf->get_word_by_addr(addr);
-	} else {
-		//cout << " cached" << endl;
-		return word;
-	}*/
-
-	return word;
+	return this->cache->get_cached(addr);
 }
 
 Access::~Access(void) {
