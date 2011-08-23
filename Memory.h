@@ -5,7 +5,7 @@
 
 class Memory {
 	public:
-		Memory(int memory_size, int block_size);
+		Memory(int data_numbers, int block_size);
 
 		Block* read(int address);
 		void write(int value);
@@ -14,10 +14,10 @@ class Memory {
 		~Memory(void);
 
 	private:
-		Block** memory;
+		Block** data;
 
-		int blocks_n;
-		int words_n;
+		int num_blocks;
+		int num_words;
 		int writer;
 };
 

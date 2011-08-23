@@ -6,11 +6,11 @@
 
 class Access {
 	public:
-		Access(int cache_size, int block_size, int assoc, int memory_size);
+		Access(int cache_size, int block_size, int assoc, int data_numbers);
 
 		void write(int value);
 		int get(int addr);
-		void print(void);
+		void print(char* str);
 		void restart_cache(void);
 
 		~Access(void);

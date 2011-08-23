@@ -9,7 +9,7 @@ using namespace std;
 Cache::Cache(int cache_size, int block_size, int assoc, int bits_n) {
 	this->hits		= 0;
 	this->assoc 		= assoc;
-	this->cache_size	= cache_size*1024;	// Cache size is given in KB
+	this->cache_size	= cache_size;	// Cache size is given in KB
 	this->block_size	= block_size;		// Block size is given in B
 	this->set_size 	 	= this->block_size * assoc;
 
@@ -26,20 +26,20 @@ Cache::Cache(int cache_size, int block_size, int assoc, int bits_n) {
 
 	for(int i=0; i<4; i++)
 		this->misses[i] = 0;
-	this->memory		= new Set*[set_n];
+	this->data		= new Set*[set_n];
 	for( int i=0; i<set_n; i++) {
-		this->memory[i] = new Set(this->assoc, this->block_size);
+		this->data[i] = new Set(this->assoc, this->block_size);
 	}
 }
 
 void Cache::restart(void) {
 	for(int i=0; i<this->set_n; i++)
-		delete this->memory[i];
-	delete this->memory;
+		delete this->data[i];
+	delete this->data;
 
-	this->memory = new Set*[set_n];
+	this->data = new Set*[set_n];
 	for(int i=0; i<this->set_n; i++)
-		this->memory[i] = new Set(this->assoc, this->block_size);
+		this->data[i] = new Set(this->assoc, this->block_size);
 
 	this->hits = 0;
 	for(int i=0; i<4; i++)
@@ -71,7 +71,7 @@ int Cache::get_cached(int address) {
 	int tag_num	= this->tag_mul & address;
 	int word_num	= this->word_mul & address;
 
-	Set* cur_set = this->memory[set_num];
+	Set* cur_set = this->data[set_num];
 	for(int i=0; i < this->assoc; i++) {
 		Block* cur_block = cur_set->get_block(i);
 		if(cur_block->get_tag() == tag_num) {
@@ -89,11 +89,11 @@ void Cache::insert_block(int address, Block* new_block) {
 	int set_num = this->set_mul & address;
 	int tag_num = this->tag_mul & address;
 
-	this->memory[set_num]->insert_block(tag_num, new_block);
+	this->data[set_num]->insert_block(tag_num, new_block);
 }
 
 Cache::~Cache(void) {
 	for(int i=0; i<this->set_n; i++)
-		delete this->memory[i];
-	delete this->memory;
+		delete this->data[i];
+	delete this->data;
 }

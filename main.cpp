@@ -20,13 +20,13 @@ int A(int x, int y);
 int B(int x, int y);
 
 int main(int argc, char** argv) {
-	if(argc!=5) {
-		cout << "Usage: " << argv[0] << " <cache_size_inKB> <block_size_inB> <associativity> <memory_size_inKB>\n";
+	if(argc!=4) {
+		cout << "Usage: " << argv[0] << " <cache_size_inKB> <block_size_inB> <associativity>\n";
 		return 1;
 	}
 
 	// Declaring variables
-	int i, j, buf;
+	int i, j;
 	ifstream inFile;
 	
 	// Opening files
@@ -38,44 +38,39 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 
-	// Initialise accessor
-	accessor = new Access(atoi(argv[1]), atoi(argv[2]), atoi(argv[3]), atoi(argv[4]));
-
 	// Reading matrix lengths
 	inFile >> matrix_n >> matrix_m >> matrix_p;
+
+	// Initialise accessor
+	accessor = new Access(atoi(argv[1])*1024, atoi(argv[2]), atoi(argv[3]), (matrix_n+matrix_p)*matrix_m);
 
 	// Reading matrices A & B
 	for(i=0; i<matrix_n; i++)
 		for(j=0; j<matrix_m; j++) {
-			inFile >> buf;
-			accessor->write(buf);
+			accessor->write(rand());
 		}
 	for(i=0; i<matrix_m; i++)
 		for(j=0; j<matrix_p; j++) {
-			inFile >> buf;
-			accessor->write(buf);
+			accessor->write(rand());
 		}
 
 	// Cache Unaware matrix multiplication
-	cout << "Cache Unaware:" << endl;
 	cache_unaware();
-	accessor->print();
+	accessor->print("unaware");
 
 	// Restart Cache
 	accessor->restart_cache();
 
 	// Cache Aware matrix multiplication
-	cout << "Cache Aware:" << endl;
 	cache_aware(2);
-	accessor->print();
+	accessor->print("aware");
 
 	// Restart Cache
 	accessor->restart_cache();
 
-	// Cache Oblivious matrix multiplication
-	cout << "Cache Oblivious:" << endl;
+	// Cache Oblivious matrix multiplicatio
 	cache_oblivious();
-	accessor->print();
+	accessor->print("oblivious");
 
 	// Closing files
 	inFile.close();

@@ -38,7 +38,7 @@ class Cache {
 		~Cache(void);
 
 	private:
-		Set** memory;
+		Set** data;
 
 		int cache_size; // Size of cache in bytes
 		int block_size;	// Size of block in bytes

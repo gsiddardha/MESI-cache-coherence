@@ -13,7 +13,6 @@ extern int B(int, int);
 void recur_func(int, int, int, int, int, int, int);
 
 void cache_oblivious(void) {
-	int i, j, k;
 	recur_func(matrix_n, matrix_m, matrix_p, 0, 0, 0, 0);
 }
 
