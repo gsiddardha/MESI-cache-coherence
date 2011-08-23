@@ -54,10 +54,12 @@ void Cache::restart(void) {
 	for(int i=0; i<num_sets; i++)
 		delete this->data[i];
 	delete this->data;
+	delete this->data_cap;
 
 	this->data = new Set*[this->num_sets];
 	for(int i=0; i<num_sets; i++)
 		this->data[i] = new Set(this->assoc, this->block_size);
+	this->data_cap = new Set(this->cache_size/this->block_size, this->block_size);
 
 	this->hits = 0;
 	for(int i=0; i<4; i++)
