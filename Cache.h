@@ -60,7 +60,6 @@ class Cache {
 		int word_mul;	// Number to be bitwise-multiplied with location to get word index
 
 		int tag_cap_mul;	// Number to be bitwise-multiplied with location to get tag index
-		int word_cap_mul; // Number to be bitwise-multiplied with location to get word index
 
 		int hits;	// Number of hits
 		int misses[4];	// Number of misses

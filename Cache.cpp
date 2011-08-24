@@ -29,11 +29,10 @@ Cache::Cache(int cache_size, int block_size, int assoc, int num_bits, Memory* me
 	this->tag_bits		= this->num_bits - (this->set_bits + this->word_bits);
 
 	this->word_mul 		= pow(2, this->word_bits) -1;
-	this->set_mul 		= pow(2, this->word_bits) * (pow(2, this->set_bits) - 1);
+	this->set_mul 		= (this->word_mul + 1) * (pow(2, this->set_bits) - 1);
 	this->tag_mul 		= pow(2, this->word_bits + this->set_bits) * (pow(2, this->tag_bits) - 1);
 
-	this->word_cap_mul	= this->word_mul;
-	this->tag_cap_mul	= pow(2, this->word_bits) * (pow(2, this->tag_bits + this->set_bits) -1);
+	this->tag_cap_mul	= (this->word_mul + 1) * (pow(2, this->tag_bits + this->set_bits) -1);
 
 	// Initialising Statistics
 	this->hits = 0;
@@ -88,11 +87,10 @@ int Cache::get_conflict_misses(void) {
 
 int Cache::get_cached(int address) {
 	int word_num	= this->word_mul & address;
-	int set_num	= (this->set_mul & address)/pow(2, this->word_bits);
+	int set_num	= (this->set_mul & address)/(this->word_mul + 1);
 	int tag_num	= (this->tag_mul & address)/pow(2, this->word_bits + this->set_bits);
 
-	int word_cap_num = word_num;
-	int tag_cap_num	= (this->tag_cap_mul & address)/pow(2, this->word_bits);
+	int tag_cap_num	= (this->tag_cap_mul & address)/(this->word_mul + 1);
 
 	Set* cur_set = this->data[set_num];
 	for(int i=0; i<assoc; i++) {
