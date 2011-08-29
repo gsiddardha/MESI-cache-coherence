@@ -82,7 +82,7 @@ int Cache::get_capacity_misses(void) {
 }
 
 int Cache::get_conflict_misses(void) {
-	return this->misses[3];
+	return this->misses[3] - this->misses[2];
 }
 
 int Cache::get_cached(int address) {
