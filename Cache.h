@@ -45,7 +45,7 @@ class Cache {
 		int cache_size; // Size of cache in bytes
 		int block_size;	// Size of block in bytes
 		int set_size;	// Size of set in bytes
-		int assoc;	// Associativity
+		int assoc;		// Associativity
 
 		int num_words;	// Number of words per block
 		int num_sets;	// Number of sets
@@ -59,9 +59,9 @@ class Cache {
 		int tag_mul;	// Number to be bitwise-multiplied with location to get tag index
 		int word_mul;	// Number to be bitwise-multiplied with location to get word index
 
-		int tag_cap_mul;	// Number to be bitwise-multiplied with location to get tag index
+		int tag_cap_mul;// Number to be bitwise-multiplied with location to get tag index
 
-		int hits;	// Number of hits
+		int hits;		// Number of hits
 		int misses[4];	// Number of misses
 };
 

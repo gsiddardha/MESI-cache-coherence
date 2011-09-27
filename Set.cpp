@@ -2,9 +2,9 @@
 #include "Set.h"
 
 Set::Set(int assoc, int block_size) {
-	this->assoc		= assoc;
+	this->assoc			= assoc;
 	this->block_size	= block_size;
-	this->_counter 	= 0;
+	this->_counter 		= 0;
 
 	// Initialising dirty and Blocks
 	this->dirty = new bool[assoc];
